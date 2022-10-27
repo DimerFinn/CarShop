@@ -17,7 +17,7 @@ public class SepplierTriggerHendler {
         for (Good1__c good : goodList){
             orderGoodIdSet.add(good.OrderGood__c);
         }
-        list<Supplier__c> supplierList = [SELECT Name, Good1__r.OrderGood__c FROM Supplier__c WHERE Good1__r.OrderGood__c IN: orderGoodIdSet];
+        list<Supplier__c> supplierList = [SELECT Name, Good1__r.OrderGood__c FROM Supplier__c WHERE Good1__r.OrderGood__c IN: orderGoodIdSet AND Active__c = TRUE]; //Квери чайлдов
         Map<Id, list<Supplier__c>> mapSupplier = new Map<Id, list<Supplier__c>>();
         for (Supplier__c sup : supplierList) {
             if (mapSupplier.get(sup.Good1__r.OrderGood__c) != null) {
@@ -38,5 +38,19 @@ public class SepplierTriggerHendler {
             orderGoodListToUpdate.add(new OrderGood__c(Id = key, Name_Supplier__c = nameString));
         }
         update orderGoodListToUpdate;
+    }
+    
+    public static void updateActivity(List<Supplier__c> newList, Map<Id, Supplier__c> oldMap) {
+        for (Supplier__c newRecord : newList) {
+            if (newRecord.Last_Delivery__c != null && newRecord.Last_Delivery__c != oldMap.get(newRecord.Id).Last_Delivery__c) {
+                if (newRecord.Last_Delivery__c.addDays(30) < Date.today()){
+                    newRecord.Active__c = False;
+                } else {
+                    newRecord.Active__c = true;
+                }
+            } else if (newRecord.Last_Delivery__c == null) {
+                newRecord.Active__c = False;
+            }
+        }
     }
 }
