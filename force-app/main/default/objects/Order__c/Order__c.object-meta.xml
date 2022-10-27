@@ -149,16 +149,16 @@
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>false</enableReports>
-    <enableSearch>true</enableSearch>
+    <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>Supplier</label>
+    <label>Order-test</label>
     <nameField>
-        <label>Supplier Name</label>
+        <label>Order Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Suppliers</pluralLabel>
+    <pluralLabel>10</pluralLabel>
     <searchLayouts></searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

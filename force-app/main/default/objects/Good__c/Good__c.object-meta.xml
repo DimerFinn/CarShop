@@ -149,17 +149,17 @@
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>false</enableReports>
-    <enableSearch>true</enableSearch>
+    <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>Private</externalSharingModel>
-    <label>Supplier</label>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <label>Good</label>
     <nameField>
-        <label>Supplier Name</label>
+        <label>Goods Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Suppliers</pluralLabel>
+    <pluralLabel>Goods</pluralLabel>
     <searchLayouts></searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
