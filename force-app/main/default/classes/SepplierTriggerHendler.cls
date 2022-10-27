@@ -1,5 +1,8 @@
 public class SepplierTriggerHendler {
-    public static void updateOlderAccounts(List<Supplier__c> newList, List<Supplier__c> oldList) {
+    @future
+    public static void updateOlderAccounts(String newListStr, String oldListStr) {
+        List<Supplier__c> newList =(List<Supplier__c>) JSON.deserialize(newListStr, List<Supplier__c>.class);
+        List<Supplier__c> oldList =(List<Supplier__c>) JSON.deserialize(oldListStr, List<Supplier__c>.class);
         Set<id> IdSet = new Set<id>();
         if (newList != null) {
           for (Supplier__c newRecord : newList)
@@ -39,8 +42,10 @@ public class SepplierTriggerHendler {
         }
         update orderGoodListToUpdate;
     }
-    
-    public static void updateActivity(List<Supplier__c> newList, Map<Id, Supplier__c> oldMap) {
+    @future
+    public static void updateActivity(String newListStr,String oldMapStr) {
+        List<Supplier__c> newList =(List<Supplier__c>) JSON.deserialize(newListStr, List<Supplier__c>.class);
+        Map<id, Supplier__c> oldMap =(Map<id, Supplier__c>) JSON.deserialize(oldMapStr, Map<id, Supplier__c>.class);
         for (Supplier__c newRecord : newList) {
             if (newRecord.Last_Delivery__c != null && newRecord.Last_Delivery__c != oldMap.get(newRecord.Id).Last_Delivery__c) {
                 if (newRecord.Last_Delivery__c.addDays(30) < Date.today()){
@@ -53,4 +58,16 @@ public class SepplierTriggerHendler {
             }
         }
     }
+    public static void upsertPost (List<Supplier__c> newList, Map<id, Supplier__c> oldMap) {
+        Boolean createPost = false;
+        for (Supplier__c newRecord : newList) {
+            if (newRecord.Last_Delivery__c != oldMap.get(newRecord.Id).Last_Delivery__c) {
+                createPost = true;
+            }
+        }
+        if (createPost) {
+            ID jobID = System.enqueueJob(new PostController());
+        }
+    }
+        
 }
