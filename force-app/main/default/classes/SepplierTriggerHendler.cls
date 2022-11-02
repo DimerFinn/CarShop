@@ -52,7 +52,7 @@ public class SepplierTriggerHendler {
     public static void upsertPost (List<Supplier__c> newList, Map<id, Supplier__c> oldMap) {
         Boolean createPost = false;
         for (Supplier__c newRecord : newList) {
-            if (newRecord.Last_Delivery__c !=null && newRecord.Last_Delivery__c != oldMap.get(newRecord.Id).Last_Delivery__c) {
+            if (newRecord.Last_Delivery__c !=null && (oldMap == null || newRecord.Last_Delivery__c != oldMap.get(newRecord.Id).Last_Delivery__c)) {
                 createPost = true;
             }
         }
