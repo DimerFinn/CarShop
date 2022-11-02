@@ -1,14 +1,15 @@
-public class MyBatchClass implements Database.Batchable<sObject> {
+public class MyBatchClass implements Schedulable, Database.Batchable<sObject> {
     public Database.QueryLocator start(Database.BatchableContext bc) {
         return Database.getQueryLocator([SELECT Id FROM OrderGood__c]);
-        // collect the batches of records or objects to be passed to execute
+       
     }
+    public void execute(SchedulableContext sc)
+     {
+     	MyBatchClass myBatchObject = new MyBatchClass(); 
+		Id batchId = Database.executeBatch(myBatchObject);
+     }
     public void execute(Database.BatchableContext bc, List<OrderGood__c> records){
-        Set<id> IdSet = new Set<id>();
-              for (OrderGood__c orderGood : records){
-            IdSet.add(orderGood.id);
-        }
-        list<Supplier__c> supplierList = [SELECT Name, Good1__r.OrderGood__c FROM Supplier__c WHERE Good1__r.OrderGood__c IN: IdSet AND Active__c = TRUE]; //Квери чайлдов
+        list<Supplier__c> supplierList = [SELECT Name, Good1__r.OrderGood__c FROM Supplier__c WHERE Good1__r.OrderGood__c IN: records AND Active__c = TRUE]; //Квери чайлдов
         Map<Id, list<Supplier__c>> mapSupplier = new Map<Id, list<Supplier__c>>();
         for (Supplier__c sup : supplierList) {
             if (mapSupplier.get(sup.Good1__r.OrderGood__c) != null) {
